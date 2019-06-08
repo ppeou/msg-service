@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>message service</title>
+  <script src="connect.js"></script>
+  <script>
+    var iid = 0;
+    var i = 0;
+
+    function autoCaller() {
+      i += 1;
+      var message = 'TS:' + (new Date().getTime());
+      console.log('------', 'Child:sending up', message);
+      if(i >= 10 && iid) {
+        console.log('stop internval');
+        iid = clearInterval(iid);
+      }
+      (parent).postMessage(message, '*'); //send the message and target URI
+    }
+
+    function _onLoad() {
+      (parent).postMessage({abc: 'hello',context: window.NewContext()}, '*');
+      /*iid = setInterval(autoCaller, 1000);
+
+      setTimeout(function () {
+        if(iid) {
+          console.log('force stop internval');
+          iid = clearInterval(iid);
+        }
+        }, 20000);*/
+    }
+
+  </script>
+</head>
+<body onload="_onLoad()">
+Content of the document......
+</body>
+
+</html>
